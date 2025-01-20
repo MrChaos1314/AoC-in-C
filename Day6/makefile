@@ -1,11 +1,10 @@
 CXX = g++
 
-CXXFLAGS = -Wall -g
-
+CXXFLAGS = -Wall -g -O3
 
 TARGET = main
 
-SRCS = main.cpp general.cpp 
+SRCS = main.cpp general.cpp map.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

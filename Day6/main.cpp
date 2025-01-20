@@ -1,79 +1,71 @@
 #include "general.h"
 
-#define PART 2
-
 int main(){
-    int counter = 0;
-    General general;
-    general.print_map();
-    general.print_position();
+    Map map = Map("./data.txt");
+    General general = General(&map);
+    //General general;
 
-    if(PART == 1){
-        //order of whiles importent (clockwise turning)
-        for(;;){
-            while(!general.is_up_blocked()){
-                if(general.is_out_of_bounds()){
-                    goto end;
-                }
-                general.go_up();
-            }
-            while(!general.is_right_blocked()){
-                if(general.is_out_of_bounds()){
-                    goto end;
-                }
-                general.go_right();
-            }
-            while(!general.is_down_blocked()){
-                if(general.is_out_of_bounds()){
-                    goto end;
-                }
-                general.go_down();
-            }
-            while(!general.is_left_blocked()){
-                if(general.is_out_of_bounds()){
-                    goto end;
-                }
-                general.go_left();
+    //Part 1
+    //order of whiles importent (clockwise turning)
+    while(general.is_in_map()){
+            general.walk();
+    }
+
+
+int marks = general.get_marks();
+std::cout << marks << "\n";
+
+
+    //Part 2 brute force
+    int counter = 0;
+    /*
+    while(!general.is_barrier_end()){
+        general.next_map();
+
+        //try 1000 times to get out if 1000 reached go out and 
+        //don't count - else count
+        //counting the potentional loops
+        for(int i = 0; general.is_in_map(); i++){
+
+            general.walk();
+
+            //TEST ~Knut
+            if(i == 6270){
+                counter++;
+                break;
             }
         }
-    }else if(PART == 2){
-        while(general.next_map()){
-
-            for(int i = 0; i< 1000; i++){
-                while(!general.is_up_blocked()){
-                    if(general.is_out_of_bounds()){
-                        goto outer;
-                    }
-                    general.go_up();
-                }
-                while(!general.is_right_blocked()){
-                    if(general.is_out_of_bounds()){
-                        goto outer;
-                    }
-                    general.go_right();
-                }
-                while(!general.is_down_blocked()){
-                    if(general.is_out_of_bounds()){
-                        goto outer;
-                    }
-                    general.go_down();
-                }
-                while(!general.is_left_blocked()){
-                    if(general.is_out_of_bounds()){
-                        goto outer;
-                    }
-                    general.go_left();
-                }
+        if(!general.is_in_map()){
+            if(general.max_walk < general.cur_walk){
+                general.max_walk = general.cur_walk;
             }
-            counter++;
-        outer:;
+        }
+    }
+    std::cout << counter << "\n";
+    std::cout << general.max_walk << "\n";
+    */
+
+    //Part 2     
+    general.reset_barrier();
+
+    //as long as not every barrier position is through
+    while(!general.is_barrier_end()){
+        general.next_map();
+
+        while(general.is_in_map()){
+            general.walk();
+            if(general.is_loop()){
+                counter++;
+
+                //DEBUG
+                //std::cout << general.get_pos().x << " - " << general.get_pos().y << "\n";
+
+                break;
+            }
         }
     }
 
-end:
-
     //general.print_map();
-    //std::cout << general.count_marks() << "\n";
     std::cout << counter << "\n";
 
     return 1;
