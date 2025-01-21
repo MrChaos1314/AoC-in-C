@@ -64,14 +64,14 @@ public:
     void print_player_position();
     void print_barrier_position();
 
-    bool is_in_map(unsigned int /*row*/, unsigned int /*col*/);
+    bool is_in_map(position cell_pos);
 
     void init_new_map();
 
     int count_marks();
-    bool is_mark(unsigned int /*row*/, unsigned int /*col*/);
+    bool is_mark(position cell_pos);
 
-    bool is_player(unsigned int /*row*/, unsigned int /*col*/);
+    bool is_player(position cell_pos);
 
     position get_player_position();
     position get_barrier_position();
@@ -80,10 +80,10 @@ public:
 
     void reset_barrier_position();
 
-    cell_type get_cell(unsigned int row, unsigned int col);
+    cell_type get_cell(position cell_pos);
 
     void set_player_position(unsigned int /*row*/, unsigned int /*col*/);
-    void set_cell(unsigned int /*row*/, unsigned int /*col*/, cell_type);
+    void set_cell(position  cell_pos, cell_type);
 
     char translate_to_char(cell_type);
     enum cell_type translate_to_cell_type(char cell);

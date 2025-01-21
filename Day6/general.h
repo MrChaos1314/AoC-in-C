@@ -17,11 +17,6 @@ public:
     int max_walk = 0;
     int cur_walk = 0;
 
-    struct position{
-        int x;
-        int y;
-    };   
-
     //functions
     void print_position();
     void print_map();
@@ -31,10 +26,10 @@ public:
     void go_left();
     void go_right();
 
-    struct position get_right();
-    struct position get_left();
-    struct position get_up();
-    struct position get_down();
+    struct Map::position get_right();
+    struct Map::position get_left();
+    struct Map::position get_up();
+    struct Map::position get_down();
 
     void turn();
 
@@ -47,7 +42,7 @@ public:
 
     Map::cell_type get_player();
 
-    void set_position(unsigned int y, unsigned int x);
+    void set_position(Map::position player_pos);
 
     bool is_loop();
     bool is_in_map();
@@ -55,7 +50,7 @@ public:
     void next_map();
 
     int get_marks();
-    struct position get_pos();
+    struct Map::position get_pos();
 
     bool is_barrier_end();
 
@@ -67,7 +62,7 @@ private:
     
     Map* map;
 
-    struct position cur_pos;
+    struct Map::position cur_pos;
 
     int* passed;
     int passed_size;

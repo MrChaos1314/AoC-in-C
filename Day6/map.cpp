@@ -104,7 +104,7 @@ void Map::print_map(){
             if(row == _barrier.y && col == _barrier.x){
                 std::cout << "\033[106;35m" << map[row][col] << "\033[m";
 
-        }else if(is_player(row, col)){
+        }else if(is_player({row, col})){
                 std::cout << "\033[106;35m" << map[row][col] << "\033[m";
             }else{
                 std::cout << map[row][col];
@@ -151,8 +151,8 @@ void Map::_init_barrier_position(){
     }
    
     if(barrier_finish == false){
-        if(!is_player(_barrier.y, _barrier.x)){
-            set_cell(_barrier.y, _barrier.x, BARRIER);
+        if(!is_player(_barrier)){
+            set_cell(_barrier, BARRIER);
         }
 
         _set_barrier_position(get_barrier_position().y, get_barrier_position().x + 1);
@@ -179,7 +179,7 @@ int Map::count_marks(){
     {
         for(unsigned int col = 0; col < WIDTH; col++)
         {
-            if(is_mark(row, col))
+            if(is_mark({row, col}))
             {
                 marks++;
             }
@@ -188,9 +188,9 @@ int Map::count_marks(){
     return marks + 1; //counting its own position too
 }
 
-bool Map::is_mark(unsigned int row, unsigned int col){
+bool Map::is_mark(position cell_pos){
 
-    switch(get_cell(row,col)){
+    switch(get_cell(cell_pos)){
 
         case MARK_UP:
             return true;
@@ -218,9 +218,9 @@ bool Map::is_mark(unsigned int row, unsigned int col){
     }
 }
 
-bool Map::is_player(unsigned int row, unsigned int col){
+bool Map::is_player(position cell_pos){
 
-    switch(get_cell(row,col)){
+    switch(get_cell(cell_pos)){
 
         case PLAYER_UP:
             return true;
@@ -239,8 +239,8 @@ bool Map::is_player(unsigned int row, unsigned int col){
     }
 }
 
-bool Map::is_in_map(unsigned int row, unsigned int col){
-    if(row > 0 && col > 0 && col < WIDTH - 1 && row < HEIGTH - 1){
+bool Map::is_in_map(position cell_pos){
+    if(cell_pos.y > 0 && cell_pos.x > 0 && cell_pos.x < WIDTH - 1 && cell_pos.y < HEIGTH - 1){
         return true;
     }else{
         return false;
@@ -254,13 +254,13 @@ void Map::init_new_map(){
 
 }
 
-Map::cell_type Map::get_cell(unsigned int row, unsigned int col){
-    cell_type cell = translate_to_cell_type(map[row][col]);
+Map::cell_type Map::get_cell(position cell_pos){
+    cell_type cell = translate_to_cell_type(map[cell_pos.y][cell_pos.x]);
     return cell;
 };
 
-void Map::set_cell(unsigned int row, unsigned int col, cell_type cell){
-    map[row][col] = translate_to_char(cell); 
+void Map::set_cell(Map::position cell_pos, cell_type cell){
+    map[cell_pos.y][cell_pos.x] = translate_to_char(cell); 
 }
 
 char Map::translate_to_char(cell_type cell){
